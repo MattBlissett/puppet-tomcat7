@@ -75,6 +75,12 @@ class tomcat7 (
      content => template('tomcat7/server.xml.erb'),
   }
 
+  exec { 'remove default Tomcat ROOT':
+    path => "/bin:/usr/bin",
+    command => 'rm -Rf /var/lib/tomcat7/webapps/ROOT',
+    onlyif => 'test -s /var/lib/tomcat7/webapps/ROOT/index.html'
+  }
+
   service { 'tomcat7':
     ensure => $ensure,
     enable => $enable,
